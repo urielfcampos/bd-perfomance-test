@@ -1,9 +1,9 @@
 from bitarray import bitarray
-
+import io
 # Lista com os tamanhos de cada dado (em bits)
 maxb_a = [1, 7, 10, 2, 12, 8, 12, 12]
 
-l = [0, 90, 100, 3, 2000, 255, 100, 4090]
+l = [1,47,190,3,3692,160,14,2]
 
 
 def bitline(l):
@@ -57,8 +57,8 @@ def w_file(file, s_bits):
     :param file: arquivo
     :param s_bits: string de bits
     """
-    with open(file, 'wb') as f:
-        bitarray(s_bits).tofile(f)
+    with open(file, 'ab') as f:
+       bitarray(s_bits).tofile(f)
 
 
 def r_file(file):
@@ -69,16 +69,20 @@ def r_file(file):
     """
     a = bitarray()
     with open(file, 'rb') as f:
-        a.fromfile(f)
-        s = ''
+        a.fromfile(f,8)
+        print(f.tell())
+        s=''
         for d in a.tolist(): s += '0' if d is False else '1'
+
         return s
 
-"""
-# Testes:
-s = bitline(l)
-print(s)
-w_file('bdb', s)
-line = r_file('bdb')
+line = r_file("bdb.bin")
+print(line)
 print(cdataline(line))
-"""
+
+# Testes:
+#s = bitline(l)
+#print(s)
+#w_file('bdb', s)
+#line = r_file('bdb')
+#print(cdataline(line[0]))

@@ -5,27 +5,30 @@ import datetime
 import csv
 import threading
 import time
+import binary_algs as bn
 
 random.seed(os.urandom(16))
 
-pessoa = {"sexo": ["M","F"],
-          "idade":[str(x) for x in range(128)],
-          "renda":[str(x) for x in range(1024)],
-          "escolaridade":["0","1","2","3"],
-          "idioma":[str(x) for x in range(4096)],
-          "pais":[str(x) for x in range(256)],
-          "localizador":["-1.45502-48.5024","-23.5489-46.6388"]}
+pessoa = {"sexo": [0,1],
+          "idade":[x for x in range(128)],
+          "renda":[x for x in range(1024)],
+          "escolaridade":[0,1,2,3],
+          "idioma":[x for x in range(4096)],
+          "pais":[x for x in range(256)],
+          "localizador":[x for x in range(15)]}
 
 def generate_data():
-        data = (pessoa["sexo"][random.randint(0,1)],random.randint(0,127),random.randint(0,1023),random.randint(0,3),
-                random.randint(0,4095),random.randint(0,255),pessoa["localizador"][random.randint(0,1)])
         with open("test.csv",'a',newline='') as file:
             datawriter = csv.writer(file, delimiter=',',
                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
             #datawriter.writerow(['Sexo','idade','renda','escolaridade','idioma','pais','localizador'])
-            for x in range(10**7):
-                datawriter.writerow([pessoa["sexo"][random.randint(0,1)],random.randint(0,127),random.randint(0,3),random.randint(0,1023),
-                random.randint(0,4095),pessoa["localizador"][random.randint(0,1)],random.randint(0,255)])
+            for x in range(10**3):
+                data = [pessoa["sexo"][random.randint(0, 1)], random.randint(0, 127),
+                        random.randint(0, 1023),random.randint(0, 3),random.randint(0, 4095),
+                        random.randint(0, 255),pessoa["localizador"][random.randint(0, 14)],
+                        pessoa["localizador"][random.randint(0, 14)]]
+                bn.w_file("bdb.bin",bn.bitline(data))
+                datawriter.writerow(data)
 print(datetime.datetime.now())
 t1=threading.Thread(target=generate_data)
 t2=threading.Thread(target=generate_data)
