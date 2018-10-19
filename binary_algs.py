@@ -74,9 +74,11 @@ def r_file(file):
         for d in a.tolist(): s += '0' if d is False else '1'
         return s
 
+"""
 # Testes:
 s = bitline(l)
 print(s)
 w_file('bdb', s)
 line = r_file('bdb')
 print(cdataline(line))
+"""
