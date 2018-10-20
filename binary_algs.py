@@ -17,7 +17,7 @@ def bitline(l):
     li = list(zip(l, maxb_a))  # Lista de pares de l com maxb_a
     s = ''  # Iniciar string
     for d in li:
-        b = bin(d[0])[2:]  # Obter o valor binário de cada número
+        b = bin(d[0])[2:]  # Obter o valor binario de cada numero
         # Preenche com 0s os valores para o tamanho correto
         s += '0' * (d[1] - len(b)) + b
     return s
@@ -67,26 +67,25 @@ def r_file(file,pointer):
     :param file:
     :return:
     """
-    a = bitarray()
     with open(file, 'rb') as f:
-        f.seek(pointer,0)
-        try:
-            a.fromfile(f,8)
-        except EOFError:
-            f.seek(pointer,0)
-            a.fromfile(f)
-        s=''
-        for d in a.tolist(): s += '0' if d is False else '1'
+        s_array = []
+        bts = f.read(8)
+        while bts:
+            a = bitarray()
+            a.frombytes(bts)
+            s = ''
+            for d in a.tolist(): s += '0' if d is False else '1'
+            s_array.append(s)
+            f.seek(0, 1)
+            bts = f.read(8)
+        return s_array
 
-        return (s,f.tell())
-
-#line = r_file("bdb.bin")
-#print(line)
-#print(cdataline(line))
-
-# Testes:
-#s = bitline(l)
-#print(s)
-#w_file('bdb', s)
-#line = r_file('bdb')
-#print(cdataline(line[0]))
+# # Testes:
+# lines = r_file("bdb.bin")
+# print(lines)
+# for l in lines: print(cdataline(l))
+# s = bitline(l)
+# print(s)
+# w_file('bdb', s)
+# line = r_file('bdb')
+# print(cdataline(line[0]))
