@@ -61,7 +61,7 @@ def w_file(file, s_bits):
        bitarray(s_bits).tofile(f)
 
 
-def r_file(file):
+def r_file(file,pointer):
     """
     pt_br: Lê de arquivo e retorna a linha de bits correspondente
     :param file:
@@ -69,16 +69,20 @@ def r_file(file):
     """
     a = bitarray()
     with open(file, 'rb') as f:
-        a.fromfile(f,8)
-        print(f.tell())
+        f.seek(pointer,0)
+        try:
+            a.fromfile(f,8)
+        except EOFError:
+            f.seek(pointer,0)
+            a.fromfile(f)
         s=''
         for d in a.tolist(): s += '0' if d is False else '1'
 
-        return s
+        return (s,f.tell())
 
-line = r_file("bdb.bin")
-print(line)
-print(cdataline(line))
+#line = r_file("bdb.bin")
+#print(line)
+#print(cdataline(line))
 
 # Testes:
 #s = bitline(l)

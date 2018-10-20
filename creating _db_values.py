@@ -22,7 +22,7 @@ def generate_data():
             datawriter = csv.writer(file, delimiter=',',
                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
             #datawriter.writerow(['Sexo','idade','renda','escolaridade','idioma','pais','localizador'])
-            for x in range(10**3):
+            for x in range(10):
                 data = [pessoa["sexo"][random.randint(0, 1)], random.randint(0, 127),
                         random.randint(0, 1023),random.randint(0, 3),random.randint(0, 4095),
                         random.randint(0, 255),pessoa["localizador"][random.randint(0, 14)],
