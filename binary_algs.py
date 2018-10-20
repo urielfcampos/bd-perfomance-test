@@ -80,12 +80,12 @@ def r_file(file):
             bts = f.read(8)
         return s_array
 
-lines = r_file("bdb.bin")
-print(lines)
-for l in lines: print(cdataline(l))
-# Testes:
-#s = bitline(l)
-#print(s)
-#w_file('bdb', s)
-#line = r_file('bdb')
-#print(cdataline(line[0]))
+# # Testes:
+# lines = r_file("bdb.bin")
+# print(lines)
+# for l in lines: print(cdataline(l))
+# s = bitline(l)
+# print(s)
+# w_file('bdb', s)
+# line = r_file('bdb')
+# print(cdataline(line[0]))
