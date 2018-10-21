@@ -36,20 +36,21 @@ class ThreadControl:
             print("Thread no",threading.active_count())
             time.sleep(15)
     def bReadline(self,file,offset):
-        import pickle
+        import shelve
         '''
         Function to read the binary file and save the result in a global class variable
         :param file: a file name
         :param offset: the range of values to read from the file
         :return:
         '''
-        bn.r_file(offset[0],offset[1],file)
+        counter = bn.r_file(offset[0],offset[1],file)
         threadName = threading.currentThread().getName()
+        arrayTest =[]
         print("Starting query1", threadName)
-        with open(f'tmp_cda{threadName}.txt',"r")as f:
-            data=f.read()
-        print(bn.cdataline(data))
-        print(qr.querie_1(data,"tmp.bin"),threadName)
+        with shelve.open(f'tmp_cda{threadName}',"r")as f:
+            for x in range(counter):
+                arrayTest.append(f[str(x)])
+        print(qr.querie_1(arrayTest,f'tmp{threadName}.bin'),threadName)
 
 
 def create_file_ranges(numberThreads):

@@ -74,4 +74,4 @@ def querie_2(array_reg, tmp_fname):
     dic.close()
 
 # Testes:
-print(querie_1(test_array, 'tmp1.bin', 'count'))
+#print(querie_1(test_array, 'tmp1.bin', 'count'))
