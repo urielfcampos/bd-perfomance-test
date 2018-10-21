@@ -40,31 +40,38 @@ def querie_1(array_reg, tmp_fname):
     Executa primeira querie / Executes first querie
     :param array_reg: lista de strings de bits.
     :param tmp_fname: nome do arquivo temporário
-    :return: (tmp_fname, filt_reg)
     [filt_reg]: Array de registros filtrados
     """
-
     # Filtrar por itens no select
     sel_array = [(32, 40), (0, 1)]
-    select = []  # Armazena strings de bits (cada dado), separadas por vírgula
+    select = []  # Armazena strings e bits (cada dado), separadas por vírgula
     for reg in array_reg: select.append(','.join(map(str, filter_select(sel_array, reg))))
     dic = shelve.open(tmp_fname)  # Associar dicionário a arquivo na memória
 
-    print(select)
     """ Salvar os resultados na querie
     salvar contador do registro como 1 se ainda não existe no dicionário,
     caso contrário, salve como valor anterior + 1. """
     for data in select: dic[data] = 1 if data not in dic else dic[data] + 1
-
-    # Preparar array de chaves e valor para retornar
-    result = []
-    for key in dic.keys(): result.append([key, dic[key]])
     dic.close()
-    return result
+
+def querie_2(array_reg, tmp_fname):
+    """
+    Executa primeira querie / Executes first querie
+    :param array_reg: lista de strings de bits.
+    :param tmp_fname: nome do arquivo temporário
+    [filt_reg]: Array de registros filtrados
+    """
+    # Filtrar por itens no select
+    sel_array = [(32, 40), (0, 1), (1, 8)]
+    select = []  # Armazena strings e bits (cada dado), separadas por vírgula
+    for reg in array_reg: select.append(','.join(map(str, filter_select(sel_array, reg))))
+    dic = shelve.open(tmp_fname)  # Associar dicionário a arquivo na memória
+
+    """ Salvar os resultados na querie
+    salvar contador do registro como 1 se ainda não existe no dicionário,
+    caso contrário, salve como valor anterior + 1. """
+    for data in select: dic[data] = 1 if data not in dic else dic[data] + 1
+    dic.close()
 
 # Testes:
-<<<<<<< HEAD
-print(querie_1(test_array, 'tmp.bin'))
-=======
-# print(querie_1(test_array, 'tmp.bin'))
->>>>>>> 5c14f36492813ea6da5c338ad0575004e9618aee
+print(querie_1(test_array, 'tmp1.bin', 'count'))

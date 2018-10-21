@@ -91,9 +91,8 @@ def write_temp(s_array):
 
 
 # # Testes:
-lines = r_file(1000, 1024, "bdb.bin")
-print(len(lines), lines)
-for l in lines: print(cdataline(l))
+r_file(1000, 1024, "bdb.bin")
+# for l in lines: print(cdataline(l))
 #lines = r_file("bdb.bin")
 #print(lines)
 #for l in lines: print(cdataline(l))
