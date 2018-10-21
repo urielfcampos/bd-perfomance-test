@@ -20,27 +20,30 @@ pessoa = {"sexo": [0,1],
 def generate_data():
         with open("test.csv",'a',newline='') as file:
             datawriter = csv.writer(file, delimiter=',',
-                            quotechar='|', quoting=csv.QUOTE_MINIMAL)
-            #datawriter.writerow(['Sexo','idade','renda','escolaridade','idioma','pais','localizador'])
-            for x in range(10**1):
+                                quotechar='|', quoting=csv.QUOTE_MINIMAL)
+            for x in range(10**5):
                 data = [pessoa["sexo"][random.randint(0, 1)], random.randint(0, 127),
                         random.randint(0, 1023),random.randint(0, 3),random.randint(0, 4095),
                         random.randint(0, 255),pessoa["localizador"][random.randint(0, 14)],
                         pessoa["localizador"][random.randint(0, 14)]]
-                bn.w_file("bdb.bin",bn.bitline(data))
+                dataByteArray = bytearray(os.urandom(8))
                 datawriter.writerow(data)
+def generate_bin():
+    with open("bdb.bin", "ab+") as f:
+        for x in range(10**8):
+            f.write(os.urandom(8))
 
 print(datetime.datetime.now())
-t1=threading.Thread(target=generate_data)
-t2=threading.Thread(target=generate_data)
-t3=threading.Thread(target=generate_data)
-t4=threading.Thread(target=generate_data)
-t5=threading.Thread(target=generate_data)
-t6=threading.Thread(target=generate_data)
-t7=threading.Thread(target=generate_data)
-t8=threading.Thread(target=generate_data)
-t9=threading.Thread(target=generate_data)
-t10=threading.Thread(target=generate_data)
+t1=threading.Thread(target=generate_bin)
+t2=threading.Thread(target=generate_bin)
+t3=threading.Thread(target=generate_bin)
+t4=threading.Thread(target=generate_bin)
+t5=threading.Thread(target=generate_bin)
+t6=threading.Thread(target=generate_bin)
+t7=threading.Thread(target=generate_bin)
+t8=threading.Thread(target=generate_bin)
+t9=threading.Thread(target=generate_bin)
+t10=threading.Thread(target=generate_bin)
 
 t1.start()
 t2.start()
@@ -53,6 +56,6 @@ t8.start()
 t9.start()
 t10.start()
 while (t10.isAlive()):
-    print("thread 10 is still alive")
+    print("Still going at it")
     time.sleep(5)
 print(datetime.datetime.now())

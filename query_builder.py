@@ -45,24 +45,24 @@ class ThreadControl:
             temp_value = bn.r_file(file,offsetValue)
             temp = temp_value[1]
             offsetValue = temp
-            self.results.append([temp_value,threading.currentThread()])
+            self.results.append([bn.cdataline(temp_value[0]),threading.currentThread()])
 
 
-def create_file_ranges(file,numberThreads):
-    range_list = []
-    temp_range_init = 0
-    temp_range_final= size//numberThreads
-    while temp_range_final < size:
-        range_list.append([temp_range_init,temp_range_final])
-        temp = temp_range_final
-        temp_range_final += temp_range_final
-        temp_range_init = temp
-    range_list.append([temp_range_init,size])
-    return range_list
+def create_file_ranges(numberThreads):
+    rangeList = []
+    totalBlocks = size // 8
+    blocksPerThread= totalBlocks // numberThreads
+    value =8
+    finalValue = blocksPerThread * value
+    while finalValue <= size:
+        rangeList.append(finalValue)
+        finalValue +=8
+
+    return rangeList
 
 def main():
     FirstControl = ThreadControl()
-    range_file = create_file_ranges("bdb.bin",8)
+    range_file = create_file_ranges(8)
     print(range_file)
     FirstControl.thread_init(4,FirstControl.bReadline,["bdb.bin",range_file])
     FirstControl.start_threads()
@@ -72,4 +72,9 @@ def main():
         for x in FirstControl.results:
             f.write(str(x))
 
-main()
+#main()
+with open("bdb.bin",'rb') as f:
+    f.read()
+    print(f.tell())
+
+print(create_file_ranges(2))
