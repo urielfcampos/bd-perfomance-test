@@ -1,6 +1,5 @@
 #coding: utf-8
 import shelve
-import binary_algs as bn
 
 def querie_1(array_reg, tmp_fname):
     """
@@ -20,7 +19,7 @@ def querie_1(array_reg, tmp_fname):
     """ Salvar os resultados na querie
     salvar contador do registro como 1 se ainda não existe no dicionário,
     caso contrário, salve como valor anterior + 1. """
-    for data in select: dic[data] = 1 if data not in dic else dic[data] + 1
+    for data in select: print(data); dic[data] = 1 if data not in dic else dic[data] + 1
 
     # Preparar array de chaves e valor para retornar
     result = []

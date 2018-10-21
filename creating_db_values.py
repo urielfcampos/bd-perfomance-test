@@ -32,7 +32,6 @@ def generate_bin():
         for x in range(10**8):
             f.write(os.urandom(8))
 
-<<<<<<< HEAD:creating _db_values.py
 print(datetime.datetime.now())
 t1=threading.Thread(target=generate_bin)
 t2=threading.Thread(target=generate_bin)
