@@ -1,34 +1,7 @@
 #coding: utf-8
 import shelve
-import binary_algs as bn
-22
-def querie_1(array_reg, tmp_fname):
-    """
-    Executa primeira querie / Executes first querie
-    :param array_reg: array de registros de dados legíveis.
-    :param tmp_fname: nome do arquivo temporário
-    :return: (tmp_fname, filt_reg)
-    [filt_reg]: Array de registros filtrados
-    """
 
-    # Filtrar por itens no select
-    sel_array = [5, 0]
-    select = []
-    for reg in array_reg: select.append(','.join(map(str, [reg[j] for j in sel_array])))
-    dic = shelve.open(tmp_fname)  # Associar dicionário a arquivo na memória
-
-    """ Salvar os resultados na querie
-    salvar contador do registro como 1 se ainda não existe no dicionário,
-    caso contrário, salve como valor anterior + 1. """
-    for data in select: dic[data] = 1 if data not in dic else dic[data] + 1
-
-    # Preparar array de chaves e valor para retornar
-    result = []
-    for key in dic.keys(): result.append([key, dic[key]])
-    dic.close()
-    return result
-
-array = [
+test_array = [
 [0, 92, 449, 3, 96, 209, 3, 10],
 [0, 82, 760, 1, 2220, 107, 5, 2],
 [0, 4, 869, 3, 1967, 166, 14, 14],
@@ -55,4 +28,31 @@ array = [
 [0, 124, 479, 3, 4002, 153, 14, 4],
 ]
 
-#print(querie_1(array, 'tmp.bin'))
+def querie_1(array_reg, tmp_fname):
+    """
+    Executa primeira querie / Executes first querie
+    :param array_reg: array de registros de dados legíveis.
+    :param tmp_fname: nome do arquivo temporário
+    :return: (tmp_fname, filt_reg)
+    [filt_reg]: Array de registros filtrados
+    """
+
+    # Filtrar por itens no select
+    sel_array = [5, 0]
+    select = []
+    for reg in array_reg: select.append(','.join(map(str, [reg[j] for j in sel_array])))
+    dic = shelve.open(tmp_fname)  # Associar dicionário a arquivo na memória
+
+    """ Salvar os resultados na querie
+    salvar contador do registro como 1 se ainda não existe no dicionário,
+    caso contrário, salve como valor anterior + 1. """
+    for data in select: dic[data] = 1 if data not in dic else dic[data] + 1
+
+    # Preparar array de chaves e valor para retornar
+    result = []
+    for key in dic.keys(): result.append([key, dic[key]])
+    dic.close()
+    return result
+
+# Testes:
+# print(querie_1(test_array, 'tmp.bin'))
