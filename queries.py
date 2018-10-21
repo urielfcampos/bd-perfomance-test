@@ -63,4 +63,8 @@ def querie_1(array_reg, tmp_fname):
     return result
 
 # Testes:
+<<<<<<< HEAD
 print(querie_1(test_array, 'tmp.bin'))
+=======
+# print(querie_1(test_array, 'tmp.bin'))
+>>>>>>> 5c14f36492813ea6da5c338ad0575004e9618aee
