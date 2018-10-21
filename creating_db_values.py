@@ -19,8 +19,7 @@ pessoa = {"sexo": [0,1],
 
 def generate_data():
         with open("test.csv",'a',newline='') as file:
-            datawriter = csv.writer(file, delimiter=',',
-                                quotechar='|', quoting=csv.QUOTE_MINIMAL)
+            datawriter = csv.writer(file, delimiter=',',quotechar='|', quoting=csv.QUOTE_MINIMAL)
             for x in range(10**5):
                 data = [pessoa["sexo"][random.randint(0, 1)], random.randint(0, 127),
                         random.randint(0, 1023),random.randint(0, 3),random.randint(0, 4095),
@@ -33,6 +32,7 @@ def generate_bin():
         for x in range(10**8):
             f.write(os.urandom(8))
 
+<<<<<<< HEAD:creating _db_values.py
 print(datetime.datetime.now())
 t1=threading.Thread(target=generate_bin)
 t2=threading.Thread(target=generate_bin)

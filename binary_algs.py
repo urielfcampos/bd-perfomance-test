@@ -1,10 +1,8 @@
 from bitarray import bitarray
 import io
+
 # Lista com os tamanhos de cada dado (em bits)
 maxb_a = [1, 7, 10, 2, 12, 8, 12, 12]
-
-l = [1,47,190,3,3692,160,14,2]
-
 
 def bitline(l):
     """
@@ -61,16 +59,23 @@ def w_file(file, s_bits):
        bitarray(s_bits).tofile(f)
 
 
-def r_file(file):
+def r_file(start, stop, file):
     """
-    pt_br: Lê de arquivo e retorna a linha de bits correspondente
-    :param file:
+    pt_br: Lê arquivo e retorna a linha de bits correspondente,
+    no intervalo provido [start, stop[, com start e stop
+    em registros de 8 bytes.
+    :param file: arquivo a ser lido
+    :param start: ponto do início de leitura
+    :param stop: ponto de fim
     :return:
     """
     with open(file, 'rb') as f:
         s_array = []
+        f.seek(8 * start, 0)
         bts = f.read(8)
-        while bts:
+        currnt_position = start
+        while bts and currnt_position < stop:
+            print(currnt_position)
             a = bitarray()
             a.frombytes(bts)
             s = ''
@@ -78,12 +83,19 @@ def r_file(file):
             s_array.append(s)
             f.seek(0, 1)
             bts = f.read(8)
+            currnt_position += 1
         return s_array
 
 # # Testes:
+<<<<<<< HEAD
 #lines = r_file("bdb.bin")
 #print(lines)
 #for l in lines: print(cdataline(l))
+=======
+lines = r_file(1000, 1024, "bdb.bin")
+print(len(lines), lines)
+for l in lines: print(cdataline(l))
+>>>>>>> 90f125e993fc65695d39721060e83bcbe227487e
 # s = bitline(l)
 # print(s)
 # w_file('bdb', s)
