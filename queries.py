@@ -1,7 +1,7 @@
 #coding: utf-8
 import shelve
 import binary_algs as bn
-
+22
 def querie_1(array_reg, tmp_fname):
     """
     Executa primeira querie / Executes first querie
@@ -55,4 +55,4 @@ array = [
 [0, 124, 479, 3, 4002, 153, 14, 4],
 ]
 
-print(querie_1(array, 'tmp.bin'))
+#print(querie_1(array, 'tmp.bin'))

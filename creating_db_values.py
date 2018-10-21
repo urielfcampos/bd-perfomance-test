@@ -6,8 +6,9 @@ import csv
 import threading
 import time
 import binary_algs as bn
-
-random.seed(os.urandom(16))
+import pickle
+import numpy as np
+random.seed(os.urandom(32))
 
 pessoa = {"sexo": [0,1],
           "idade":[x for x in range(128)],
@@ -20,7 +21,7 @@ pessoa = {"sexo": [0,1],
 def generate_data():
         with open("test.csv",'a',newline='') as file:
             datawriter = csv.writer(file, delimiter=',',quotechar='|', quoting=csv.QUOTE_MINIMAL)
-            for x in range(10**5):
+            for x in range(10**8):
                 data = [pessoa["sexo"][random.randint(0, 1)], random.randint(0, 127),
                         random.randint(0, 1023),random.randint(0, 3),random.randint(0, 4095),
                         random.randint(0, 255),pessoa["localizador"][random.randint(0, 14)],
@@ -28,22 +29,24 @@ def generate_data():
                 dataByteArray = bytearray(os.urandom(8))
                 datawriter.writerow(data)
 def generate_bin():
-    with open("bdb.bin", "ab+") as f:
-        for x in range(10**8):
-            f.write(os.urandom(8))
+    with open("bdb.bin", "ab") as f:
+           f.write(os.urandom(8*(10**8)))
 
-<<<<<<< HEAD:creating _db_values.py
+
+
+
+
 print(datetime.datetime.now())
-t1=threading.Thread(target=generate_bin)
-t2=threading.Thread(target=generate_bin)
-t3=threading.Thread(target=generate_bin)
-t4=threading.Thread(target=generate_bin)
-t5=threading.Thread(target=generate_bin)
-t6=threading.Thread(target=generate_bin)
-t7=threading.Thread(target=generate_bin)
-t8=threading.Thread(target=generate_bin)
-t9=threading.Thread(target=generate_bin)
-t10=threading.Thread(target=generate_bin)
+t1=threading.Thread(target=generate_data)
+t2=threading.Thread(target=generate_data)
+t3=threading.Thread(target=generate_data)
+t4=threading.Thread(target=generate_data)
+t5=threading.Thread(target=generate_data)
+t6=threading.Thread(target=generate_data)
+t7=threading.Thread(target=generate_data)
+t8=threading.Thread(target=generate_data)
+t9=threading.Thread(target=generate_data)
+t10=threading.Thread(target=generate_data)
 
 t1.start()
 t2.start()

@@ -1,6 +1,6 @@
 from bitarray import bitarray
-import io
-
+import pickle
+import threading
 # Lista com os tamanhos de cada dado (em bits)
 maxb_a = [1, 7, 10, 2, 12, 8, 12, 12]
 
@@ -71,36 +71,36 @@ def r_file(start, stop, file):
     """
     with open(file, 'rb') as f:
         s_array = []
-        f.seek(8 * start, 0)
-        bts = f.read(8)
+        f.seek(start, 0)
+        bts = f.read(80000)
         currnt_position = start
         while bts and currnt_position < stop:
             a = bitarray()
             a.frombytes(bts)
-            s = ''
-            for d in a.tolist(): s += '0' if d is False else '1'
-            s_array.append(s)
+            s = a.to01()
+            #for d in a.tolist(): s += '0' if d is False else '1'
             f.seek(0, 1)
-            bts = f.read(8)
-            currnt_position += 1
-        return s_array
+            bts = f.read(80000)
+            currnt_position = f.tell()
+            write_temp(s)
+
+def write_temp(s_array):
+    thread=threading.currentThread().getName()
+    with open(f'tmp_cda{thread}.txt', "a")as f:
+        f.write(s_array)
+
 
 # # Testes:
-<<<<<<< HEAD
 # lines = r_file(1000, 1024, "bdb.bin")
 # print(len(lines), lines)
 # for l in lines: print(cdataline(l))
-=======
-<<<<<<< HEAD
+
 #lines = r_file("bdb.bin")
 #print(lines)
 #for l in lines: print(cdataline(l))
-=======
-lines = r_file(1000, 1024, "bdb.bin")
-print(len(lines), lines)
-for l in lines: print(cdataline(l))
->>>>>>> 90f125e993fc65695d39721060e83bcbe227487e
->>>>>>> 41bba882ff7a647dcd8a84f90320a56ce9caf274
+#lines = r_file(1000, 1024, "bdb.bin")
+#print(len(lines), lines)
+#for l in lines: print(cdataline(l))
 # s = bitline(l)
 # print(s)
 # w_file('bdb', s)
