@@ -3,7 +3,7 @@ import os
 import threading
 import time
 import queries as qr
-import  datetime
+import datetime
 size = os.stat("bdb2.bin").st_size
 
 
@@ -46,7 +46,7 @@ class ThreadControl:
         bn.r_file(offset[0],offset[1],file)
         threadName = threading.currentThread().getName()
         print("Starting query1", threadName)
-        with open(f'tmp_cda{threadName}.txt',"r")as f:
+        with open(f'tmp_cda{threadName}',"r")as f:
             data=f.read()
         print(bn.cdataline(data))
         print(qr.querie_1(data,"tmp.bin"),threadName)
