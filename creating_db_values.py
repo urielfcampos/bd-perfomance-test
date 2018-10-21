@@ -20,17 +20,18 @@ pessoa = {"sexo": [0,1],
 
 def generate_data():
         with open("test.csv",'a',newline='') as file:
-            datawriter = csv.writer(file, delimiter=',',quotechar='|', quoting=csv.QUOTE_MINIMAL)
+            datawriter = csv.writer(file, delimiter=',', quoting=csv.QUOTE_MINIMAL)
+            dataBuffer =[]
             for x in range(10**8):
                 data = [pessoa["sexo"][random.randint(0, 1)], random.randint(0, 127),
                         random.randint(0, 1023),random.randint(0, 3),random.randint(0, 4095),
                         random.randint(0, 255),pessoa["localizador"][random.randint(0, 14)],
                         pessoa["localizador"][random.randint(0, 14)]]
-                dataByteArray = bytearray(os.urandom(8))
                 datawriter.writerow(data)
+
 def generate_bin():
-    with open("bdb.bin", "ab") as f:
-           f.write(os.urandom(8*(10**8)))
+    with open("bdb2.bin", "ab") as f:
+           f.write(os.urandom(8*(10**5)))
 
 
 

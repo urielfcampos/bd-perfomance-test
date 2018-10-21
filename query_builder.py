@@ -4,7 +4,8 @@ import threading
 import time
 import queries as qr
 import  datetime
-size = os.stat("bdb.bin").st_size
+size = os.stat("bdb2.bin").st_size
+
 
 class ThreadControl:
     numberThreads:int
@@ -44,10 +45,10 @@ class ThreadControl:
         '''
         bn.r_file(offset[0],offset[1],file)
         threadName = threading.currentThread().getName()
-        print("STARTING QUERY1")
-        with open(f'temp_cda{threadName}',"rb")as f:
-            data=pickle.load(f)
-        print("Starting query1",threadName)
+        print("Starting query1", threadName)
+        with open(f'tmp_cda{threadName}.txt',"r")as f:
+            data=f.read()
+        print(bn.cdataline(data))
         print(qr.querie_1(data,"tmp.bin"),threadName)
 
 
@@ -66,7 +67,7 @@ def main():
     FirstControl = ThreadControl()
     range_file = create_file_ranges(10)
     #print(range_file)
-    FirstControl.thread_init(10,FirstControl.bReadline,["bdb.bin",range_file])
+    FirstControl.thread_init(10,FirstControl.bReadline,["bdb2.bin",range_file])
     FirstControl.start_threads()
     for process in FirstControl.threadArray:
         process.join()
