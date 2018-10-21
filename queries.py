@@ -2,47 +2,55 @@
 import shelve
 
 test_array = [
-[0, 92, 449, 3, 96, 209, 3, 10],
-[0, 82, 760, 1, 2220, 107, 5, 2],
-[0, 4, 869, 3, 1967, 166, 14, 14],
-[0, 75, 634, 2, 2459, 41, 13, 5],
-[0, 32, 361, 1, 2453, 141, 8, 10],
-[0, 79, 185, 2, 298, 82, 6, 13],
-[0, 126, 390, 0, 3773, 124, 12, 9],
-[1, 45, 267, 3, 3788, 114, 9, 6],
-[1, 125, 732, 2, 3010, 65, 9, 6],
-[1, 8, 98, 0, 3224, 210, 2, 14],
-[0, 21, 576, 2, 1517, 132, 7, 1],
-[1, 62, 221, 2, 1245, 109, 12, 6],
-[1, 126, 1021, 2, 3450, 247, 13, 4],
-[1, 102, 60, 0, 1098, 87, 4, 7],
-[1, 2, 1009, 1, 546, 253, 14, 0],
-[1, 84, 672, 0, 1605, 143, 12, 9],
-[1, 4, 184, 1, 4091, 252, 3, 4],
-[0, 112, 944, 3, 2179, 250, 11, 2],
-[1, 6, 160, 1, 3364, 146, 12, 12],
-[0, 75, 972, 0, 2470, 79, 13, 8],
-[1, 114, 363, 2, 2080, 28, 0, 12],
-[0, 80, 459, 0, 3003, 122, 0, 1],
-[0, 99, 695, 3, 1219, 78, 6, 2],
-[0, 124, 479, 3, 4002, 153, 14, 4],
-]
+ '0101110001110000011100000110000011010001000000000011000000001010',
+ '0101001010111110000110001010110001101011000000000101000000000010',
+ '0000010011011001011101111010111110100110000000001110000000001110',
+ '0100101110011110101010011001101100101001000000001101000000000101',
+ '0010000001011010010110011001010110001101000000001000000000001010',
+ '0100111100101110011000010010101001010010000000000110000000001101',
+ '0111111001100001100011101011110101111100000000001100000000001001',
+ '1010110101000010111111101100110001110010000000001001000000000110',
+ '1111110110110111001010111100001001000001000000001001000000000110',
+ '1000100000011000100011001001100011010010000000000010000000001110',
+ '0001010110010000001001011110110110000100000000000111000000000001',
+ '1011111000110111011001001101110101101101000000001100000000000110',
+ '1111111011111111011011010111101011110111000000001101000000000100',
+ '1110011000001111000001000100101001010111000000000100000000000111']
+
+"""
+1 bit sexo, 7-bits idade, 10-bits renda, 2-bits escolaridade, 
+12 -bits idioma, 8-bits país, 24-bits localizador
+
+Array de marcação de bits iniciais do atributos listados acima:
+[0, 1, 8, 18, 20, 32, 40, 52, 64]
+"""
+
+def filter_select(sel_array, reg):
+    """
+    Filtra o select dado uma lista de intervalos de bits
+    :param sel_array:
+    :return: lista de dados convertidos para decimal
+    """
+    strings = []
+    for item in sel_array: strings.append(int(reg[item[0]:item[1]], 2))
+    return strings
 
 def querie_1(array_reg, tmp_fname):
     """
     Executa primeira querie / Executes first querie
-    :param array_reg: array de registros de dados legíveis.
+    :param array_reg: lista de strings de bits.
     :param tmp_fname: nome do arquivo temporário
     :return: (tmp_fname, filt_reg)
     [filt_reg]: Array de registros filtrados
     """
 
     # Filtrar por itens no select
-    sel_array = [5, 0]
-    select = []
-    for reg in array_reg: select.append(','.join(map(str, [reg[j] for j in sel_array])))
+    sel_array = [(32, 40), (0, 1)]
+    select = []  # Armazena strings de bits (cada dado), separadas por vírgula
+    for reg in array_reg: select.append(','.join(map(str, filter_select(sel_array, reg))))
     dic = shelve.open(tmp_fname)  # Associar dicionário a arquivo na memória
 
+    print(select)
     """ Salvar os resultados na querie
     salvar contador do registro como 1 se ainda não existe no dicionário,
     caso contrário, salve como valor anterior + 1. """
@@ -55,4 +63,4 @@ def querie_1(array_reg, tmp_fname):
     return result
 
 # Testes:
-# print(querie_1(test_array, 'tmp.bin'))
+print(querie_1(test_array, 'tmp.bin'))
