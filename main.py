@@ -14,6 +14,6 @@ def main():
         elif op == 1: pass  # substituir pelo algoritmo correto
         elif op == 2: creator.create_db_values()
         elif op == 3: pass  # substituir pelo algoritmo correto
-        else: pass #print('Opção inválida\n')
+        else: print('Opção inválida\n')
 
 if __name__ == '__main__': main()

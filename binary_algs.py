@@ -71,9 +71,9 @@ def r_file(start, stop, file):
     """
     with open(file, 'rb') as f:
         s_array = []
-        f.seek(start, 1)
+        f.seek(8 * start, 0)
         bts = f.read(8)
-        currnt_position = 0
+        currnt_position = start
         while bts and currnt_position < stop:
             print(currnt_position)
             a = bitarray()
@@ -87,9 +87,9 @@ def r_file(start, stop, file):
         return s_array
 
 # # Testes:
-# lines = r_file(0, 1024, "bdb.bin")
-# print(len(lines), lines)
-#for l in lines: print(cdataline(l))
+lines = r_file(1000, 1024, "bdb.bin")
+print(len(lines), lines)
+for l in lines: print(cdataline(l))
 # s = bitline(l)
 # print(s)
 # w_file('bdb', s)
