@@ -86,9 +86,21 @@ def r_file(start, stop, file):
         return s_array
 
 # # Testes:
+<<<<<<< HEAD
 # lines = r_file(1000, 1024, "bdb.bin")
 # print(len(lines), lines)
 # for l in lines: print(cdataline(l))
+=======
+<<<<<<< HEAD
+#lines = r_file("bdb.bin")
+#print(lines)
+#for l in lines: print(cdataline(l))
+=======
+lines = r_file(1000, 1024, "bdb.bin")
+print(len(lines), lines)
+for l in lines: print(cdataline(l))
+>>>>>>> 90f125e993fc65695d39721060e83bcbe227487e
+>>>>>>> 41bba882ff7a647dcd8a84f90320a56ce9caf274
 # s = bitline(l)
 # print(s)
 # w_file('bdb', s)
