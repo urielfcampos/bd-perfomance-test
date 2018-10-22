@@ -30,7 +30,7 @@ def filter_select(sel_array, reg):
 
 def querie_1(array_reg, tmp_fname):
     """
-    Executa primeira querie / Executes first querie
+    Executa 1a querie
     :param array_reg: lista de strings de bits.
     :param tmp_fname: nome do arquivo temporário
     """
@@ -42,13 +42,17 @@ def querie_1(array_reg, tmp_fname):
 
     """ Salvar os resultados na querie
     salvar contador do registro como 1 se ainda não existe no dicionário,
-    caso contrário, salve como valor anterior + 1. """
+    caso contrário, salve como valor anterior + 1. 
+    equivale a SQL count(*) """
     for data in select: dic[data] = 1 if data not in dic else dic[data] + 1
+    result = []
+    for key in dic.keys(): result.append([key, dic[key]])
     dic.close()
+    return result
 
 def querie_2(array_reg, tmp_fname):
     """
-    Executa primeira querie / Executes first querie
+    Executa 2a querie
     :param array_reg: lista de strings de bits.
     :param tmp_fname: nome do arquivo temporário
     """
@@ -60,14 +64,18 @@ def querie_2(array_reg, tmp_fname):
 
     """ Salvar os resultados na querie
     salvar contador do registro como 1 se ainda não existe no dicionário,
-    caso contrário, salve como valor anterior + 1. """
+    caso contrário, salve como valor anterior + 1. 
+    equivale a SQL count(*) """
     for data in select: dic[data] = 1 if data not in dic else dic[data] + 1
-    for key in dic.keys(): print(key, '-', dic[key])
+    # for key in dic.keys(): print(key, '-', dic[key])
+    result = []
+    for key in dic.keys(): result.append([key, dic[key]])
     dic.close()
+    return result
 
 def querie_3_4(array_reg, choice, tmp_fname):
     """
-    Executa primeira querie / Executes first querie
+    Executa 3a e 4a queries
     :param array_reg: lista de strings de bits.
     :param tmp_fname: nome do arquivo temporário
     :param choice: 'salario' ou 'idade'
@@ -80,14 +88,17 @@ def querie_3_4(array_reg, choice, tmp_fname):
 
     # Calcular média do salário ou idade
     sum = 0
-    for data in select: sum += int(data[-1])
+    for data in select:
+        dic[data] = int(data[-1])
+        sum += int(data[-1])
     # for key in dic.keys(): print(key, '-', dic[key])
-    # print('Media:', sum / len(dic.keys()))
+    total_keys = len(dic.keys())
     dic.close()
+    return round(sum / total_keys, 2)
 
 def querie_5(array_reg, tmp_fname, condition):
     """
-    Executa primeira querie / Executes first querie
+    Executa 5a querie
     :param array_reg: lista de strings de bits.
     :param tmp_fname: nome do arquivo temporário
     :param condition: (lista) condition = [(lo, hi), '<|<=|=|>=|>', number]
@@ -106,16 +117,50 @@ def querie_5(array_reg, tmp_fname, condition):
     sel_array = [(32, 40), (0, 1)]
     select = []  # Armazena strings de bits (cada dado), separadas por vírgula
     for reg in array_reg:
-        if cmp(int(reg[lo:hi] ,2), n):
+        if cmp(int(reg[lo:hi], 2), n):
             select.append(','.join(map(str, filter_select(sel_array, reg))))
 
     """ Salvar os resultados na querie
     salvar contador do registro como 1 se ainda não existe no dicionário,
-    caso contrário, salve como valor anterior + 1. """
+    caso contrário, salve como valor anterior + 1. 
+    equivale a SQL count(*) """
     for data in select: dic[data] = 1 if data not in dic else dic[data] + 1
-    for key in dic.keys(): print(key, '-', dic[key])
+    result = []
+    for key in dic.keys(): result.append([key, dic[key]])
     dic.close()
+    return result
 
-# Testes:
+def querie_6_7(array_reg, tmp_fname, cond1, cond2):
+    """
+    Executa 6a e 7a queries
+    :param array_reg: lista de strings de bits.
+    :param tmp_fname: nome do arquivo temporário
+    :param cond1|2]: (lista) condition = [(lo, hi), '<|<=|=|>=|>', number]
+    onde:
+        *lo = limite inferior. hi = limite superior;
+        *(lo, hi) = um intervalo de bits | [lo, hi[;
+        *'<|<=|=|>=|>': Uma das opções entre aspas (exemplo: '<')
+        *number = inteiro qualquer
+    """
+    dic = shelve.open(tmp_fname)  # Associar dicionário a arquivo na memória
+    cmp1 = _cmps[cond1[1]]; cmp2 = _cmps[cond2[1]]
+    lo1 = cond1[0][0]; hi1 = cond1[0][1]
+    lo2 = cond2[0][0]; hi2 = cond2[0][1]
+    n1 = cond1[2]; n2 = cond2[2]
 
-#querie_5(test_array, 'tmp.bin', [(32, 40), '>', 15])
+    # Filtrar por itens no select
+    sel_array = [(32, 40), (0, 1)]
+    select = []  # Armazena strings de bits (cada dado), separadas por vírgula
+    for reg in array_reg:
+        if cmp1(int(reg[lo1:hi1], 2), n1) and cmp2(int(reg[lo2:hi2], 2), n2):
+            select.append(','.join(map(str, filter_select(sel_array, reg))))
+
+    """ Salvar os resultados na querie
+    salvar contador do registro como 1 se ainda não existe no dicionário,
+    caso contrário, salve como valor anterior + 1. 
+    equivale a SQL count(*) """
+    for data in select: dic[data] = 1 if data not in dic else dic[data] + 1
+    result = []
+    for key in dic.keys(): result.append([key, dic[key]])
+    dic.close()
+    return result

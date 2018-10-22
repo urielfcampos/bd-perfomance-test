@@ -51,9 +51,8 @@ class ThreadControl:
             with shelve.open(f'tmp_cda{threadName}', "r")as f:
                 for x in range(counter):
                     arrayTest.append(f[str(x)])
-
-            print(qr.querie_1(arrayTest, f'tmp{threadName}.bin'), threadName)
-
+                print(qr.querie_6_7(arrayTest,  f'tmp{threadName}.bin',
+                                    [(32, 40), '>=', 0], [(32, 40), '<=', 15]), threadName)
 
 def create_file_ranges(numberThreads):
     rangeList = []
@@ -74,6 +73,9 @@ def main():
     FirstControl.start_threads()
     for process in FirstControl.threadArray:
         process.join()
-print(datetime.datetime.now())
+
+a = datetime.datetime.now()
 main()
-print(datetime.datetime.now())
+b = datetime.datetime.now()
+(_elapsed_min, _elapsed_sec) = (b.minute - a.minute, b.second - a.second)
+print(f'Total elapsed time: {_elapsed_min}min{_elapsed_sec}s')

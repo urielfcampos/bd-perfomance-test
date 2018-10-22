@@ -72,7 +72,6 @@ def r_file(start, stop, file):
     threadName=threading.currentThread().getName()
     with open(file, 'rb') as f:
         with shelve.open(f'tmp_cda{threadName}', "c")as file:
-            s_array = []
             f.seek(start, 0)
             bts = f.read(8)
             currnt_position = start
@@ -81,27 +80,9 @@ def r_file(start, stop, file):
                 a = bitarray()
                 a.frombytes(bts)
                 s = a.to01()
-                # for d in a.tolist(): s += '0' if d is False else '1'
                 f.seek(0, 1)
                 bts = f.read(8)
                 currnt_position = f.tell()
                 file[str(counter)] = s
                 counter += 1
             return counter
-
-
-
-
-
-
-# # Testes:
-r_file(1000, 1024, "bdb.bin")
-# for l in lines: print(cdataline(l))
-#lines = r_file("bdb.bin")
-#print(lines)
-#for l in lines: print(cdataline(l))
-# s = bitline(l)
-# print(s)
-# w_file('bdb', s)
-# line = r_file('bdb')
-# print(cdataline(line[0]))
