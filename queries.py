@@ -117,9 +117,5 @@ def querie_5(array_reg, tmp_fname, condition):
     dic.close()
 
 # Testes:
-<<<<<<< HEAD
 
 #querie_5(test_array, 'tmp.bin', [(32, 40), '>', 15])
-=======
-print(querie_1(test_array, 'tmp1.bin', 'count'))
->>>>>>> parent of 3ecd145... WORKING

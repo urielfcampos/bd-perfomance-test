@@ -69,40 +69,26 @@ def r_file(start, stop, file):
     :param stop: ponto de fim
     :return:
     """
-    with open(file, 'rb') as f:
-        s_array = []
-        f.seek(start, 0)
-        bts = f.read(8)
-        currnt_position = start
-        while bts and currnt_position < stop:
-            a = bitarray()
-            a.frombytes(bts)
-            s = a.to01()
-            s_array.append(s)
-            #for d in a.tolist(): s += '0' if d is False else '1'
-            f.seek(0, 1)
-            bts = f.read(8)
-
-            currnt_position = f.tell()
-            if len(s_array)==10000:
-                write_temp(s_array)
-                s_array.clear()
-
-def write_temp(s_array):
     threadName=threading.currentThread().getName()
-    with shelve.open(f'tmp_cda{threadName}', "c")as f:
-        for x in range(len(s_array)//10):
-            f[str(hash(s_array[x]))] = s_array[x]
-            f[str(hash(s_array[x+1]))] = s_array[x+1]
-            f[str(hash(s_array[x+2]))] = s_array[x+2]
-            f[str(hash(s_array[x+3]))] = s_array[x+3]
-            f[str(hash(s_array[x+4]))] = s_array[x+4]
-            f[str(hash(s_array[x+5]))] = s_array[x+5]
-            f[str(hash(s_array[x+6]))] = s_array[x+6]
-            f[str(hash(s_array[x+7]))] = s_array[x+7]
-            f[str(hash(s_array[x+8]))] = s_array[x+8]
-            f[str(hash(s_array[x+9]))] = s_array[x+9]
-        f.close()
+    with open(file, 'rb') as f:
+        with shelve.open(f'tmp_cda{threadName}', "c")as file:
+            s_array = []
+            f.seek(start, 0)
+            bts = f.read(8)
+            currnt_position = start
+            counter = 0
+            while bts and currnt_position < stop:
+                a = bitarray()
+                a.frombytes(bts)
+                s = a.to01()
+                # for d in a.tolist(): s += '0' if d is False else '1'
+                f.seek(0, 1)
+                bts = f.read(8)
+                currnt_position = f.tell()
+                file[str(counter)] = s
+                counter += 1
+            return counter
+
 
 
 
