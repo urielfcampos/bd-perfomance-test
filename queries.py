@@ -10,22 +10,6 @@ _cmps = {
     '>': lambda a, b: a > b,
 }
 
-test_array = [
- '0101110001110000011100000110000011010001000000000011000000001010',
- '0101001010111110000110001010110001101011000000000101000000000010',
- '0000010011011001011101111010111110100110000000001110000000001110',
- '0100101110011110101010011001101100101001000000001101000000000101',
- '0010000001011010010110011001010110001101000000001000000000001010',
- '0100111100101110011000010010101001010010000000000110000000001101',
- '0111111001100001100011101011110101111100000000001100000000001001',
- '1010110101000010111111101100110001110010000000001001000000000110',
- '1111110110110111001010111100001001000001000000001001000000000110',
- '1000100000011000100011001001100011010010000000000010000000001110',
- '0001010110010000001001011110110110000100000000000111000000000001',
- '1011111000110111011001001101110101101101000000001100000000000110',
- '1111111011111111011011010111101011110111000000001101000000000100',
- '1110011000001111000001000100101001010111000000000100000000000111']
-
 """
 1 bit sexo, 7-bits idade, 10-bits renda, 2-bits escolaridade, 
 12 -bits idioma, 8-bits país, 24-bits localizador
@@ -50,11 +34,11 @@ def querie_1(array_reg, tmp_fname):
     :param array_reg: lista de strings de bits.
     :param tmp_fname: nome do arquivo temporário
     """
+    dic = shelve.open(tmp_fname)  # Associar dicionário a arquivo na memória
     # Filtrar por itens no select
     sel_array = [(32, 40), (0, 1)]
     select = []  # Armazena strings de bits (cada dado), separadas por vírgula
     for reg in array_reg: select.append(','.join(map(str, filter_select(sel_array, reg))))
-    dic = shelve.open(tmp_fname)  # Associar dicionário a arquivo na memória
 
     """ Salvar os resultados na querie
     salvar contador do registro como 1 se ainda não existe no dicionário,
@@ -68,11 +52,11 @@ def querie_2(array_reg, tmp_fname):
     :param array_reg: lista de strings de bits.
     :param tmp_fname: nome do arquivo temporário
     """
+    dic = shelve.open(tmp_fname)  # Associar dicionário a arquivo na memória
     # Filtrar por itens no select
     sel_array = [(32, 40), (0, 1), (1, 8)]
     select = []  # Armazena strings de bits (cada dado), separadas por vírgula
     for reg in array_reg: select.append(','.join(map(str, filter_select(sel_array, reg))))
-    dic = shelve.open(tmp_fname)  # Associar dicionário a arquivo na memória
 
     """ Salvar os resultados na querie
     salvar contador do registro como 1 se ainda não existe no dicionário,
@@ -88,11 +72,11 @@ def querie_3_4(array_reg, choice, tmp_fname):
     :param tmp_fname: nome do arquivo temporário
     :param choice: 'salario' ou 'idade'
     """
+    dic = shelve.open(tmp_fname)  # Associar dicionário a arquivo na memória
     # Filtrar por itens no select
     sel_array = [(32, 40), (0, 1), (8, 18)] if choice is 'salario' else [(32, 40), (0, 1), (1, 8)]
     select = []  # Armazena strings de bits (cada dado), separadas por vírgula
     for reg in array_reg: select.append(','.join(map(str, filter_select(sel_array, reg))))
-    dic = shelve.open(tmp_fname)  # Associar dicionário a arquivo na memória
 
     # Calcular média do salário ou idade
     sum = 0
@@ -113,6 +97,7 @@ def querie_5(array_reg, tmp_fname, condition):
         *'<|<=|=|>=|>': Uma das opções entre aspas (exemplo: '<')
         *number = inteiro qualquer
     """
+    dic = shelve.open(tmp_fname)  # Associar dicionário a arquivo na memória
     cmp = _cmps[condition[1]]
     lo = condition[0][0]; hi = condition[0][1]
     n = condition[2]
@@ -123,7 +108,6 @@ def querie_5(array_reg, tmp_fname, condition):
     for reg in array_reg:
         if cmp(int(reg[lo:hi] ,2), n):
             select.append(','.join(map(str, filter_select(sel_array, reg))))
-    dic = shelve.open(tmp_fname)  # Associar dicionário a arquivo na memória
 
     """ Salvar os resultados na querie
     salvar contador do registro como 1 se ainda não existe no dicionário,
@@ -133,5 +117,5 @@ def querie_5(array_reg, tmp_fname, condition):
     dic.close()
 
 # Testes:
-print(querie_1(test_array, 'tmp1.bin', 'count'))
-#querie_5(test_array, 'tmp1.bin', [(32, 40), '>', 15])
+
+#querie_5(test_array, 'tmp.bin', [(32, 40), '>', 15])
