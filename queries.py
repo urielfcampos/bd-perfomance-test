@@ -1,6 +1,15 @@
 #coding: utf-8
 import shelve
 
+# Dicionário de condições
+_cmps = {
+    '<': lambda a, b: a < b,
+    '<=': lambda a, b: a <= b,
+    '=': lambda a, b: a == b,
+    '>=': lambda a, b: a >= b,
+    '>': lambda a, b: a > b,
+}
+
 test_array = [
  '0101110001110000011100000110000011010001000000000011000000001010',
  '0101001010111110000110001010110001101011000000000101000000000010',
@@ -40,11 +49,10 @@ def querie_1(array_reg, tmp_fname):
     Executa primeira querie / Executes first querie
     :param array_reg: lista de strings de bits.
     :param tmp_fname: nome do arquivo temporário
-    [filt_reg]: Array de registros filtrados
     """
     # Filtrar por itens no select
     sel_array = [(32, 40), (0, 1)]
-    select = []  # Armazena strings e bits (cada dado), separadas por vírgula
+    select = []  # Armazena strings de bits (cada dado), separadas por vírgula
     for reg in array_reg: select.append(','.join(map(str, filter_select(sel_array, reg))))
     dic = shelve.open(tmp_fname)  # Associar dicionário a arquivo na memória
 
@@ -59,11 +67,10 @@ def querie_2(array_reg, tmp_fname):
     Executa primeira querie / Executes first querie
     :param array_reg: lista de strings de bits.
     :param tmp_fname: nome do arquivo temporário
-    [filt_reg]: Array de registros filtrados
     """
     # Filtrar por itens no select
     sel_array = [(32, 40), (0, 1), (1, 8)]
-    select = []  # Armazena strings e bits (cada dado), separadas por vírgula
+    select = []  # Armazena strings de bits (cada dado), separadas por vírgula
     for reg in array_reg: select.append(','.join(map(str, filter_select(sel_array, reg))))
     dic = shelve.open(tmp_fname)  # Associar dicionário a arquivo na memória
 
@@ -71,7 +78,63 @@ def querie_2(array_reg, tmp_fname):
     salvar contador do registro como 1 se ainda não existe no dicionário,
     caso contrário, salve como valor anterior + 1. """
     for data in select: dic[data] = 1 if data not in dic else dic[data] + 1
+    for key in dic.keys(): print(key, '-', dic[key])
+    dic.close()
+
+def querie_3_4(array_reg, choice, tmp_fname):
+    """
+    Executa primeira querie / Executes first querie
+    :param array_reg: lista de strings de bits.
+    :param tmp_fname: nome do arquivo temporário
+    :param choice: 'salario' ou 'idade'
+    """
+    # Filtrar por itens no select
+    sel_array = [(32, 40), (0, 1), (8, 18)] if choice is 'salario' else [(32, 40), (0, 1), (1, 8)]
+    select = []  # Armazena strings de bits (cada dado), separadas por vírgula
+    for reg in array_reg: select.append(','.join(map(str, filter_select(sel_array, reg))))
+    dic = shelve.open(tmp_fname)  # Associar dicionário a arquivo na memória
+
+    # Calcular média do salário ou idade
+    sum = 0
+    for data in select: sum += int(data[-1])
+    # for key in dic.keys(): print(key, '-', dic[key])
+    # print('Media:', sum / len(dic.keys()))
+    dic.close()
+
+def querie_5(array_reg, tmp_fname, condition):
+    """
+    Executa primeira querie / Executes first querie
+    :param array_reg: lista de strings de bits.
+    :param tmp_fname: nome do arquivo temporário
+    :param condition: (lista) condition = [(lo, hi), '<|<=|=|>=|>', number]
+    onde:
+        *lo = limite inferior. hi = limite superior;
+        *(lo, hi) = um intervalo de bits | [lo, hi[;
+        *'<|<=|=|>=|>': Uma das opções entre aspas (exemplo: '<')
+        *number = inteiro qualquer
+    """
+    cmp = _cmps[condition[1]]
+    lo = condition[0][0]; hi = condition[0][1]
+    n = condition[2]
+
+    # Filtrar por itens no select
+    sel_array = [(32, 40), (0, 1)]
+    select = []  # Armazena strings de bits (cada dado), separadas por vírgula
+    for reg in array_reg:
+        if cmp(int(reg[lo:hi] ,2), n):
+            select.append(','.join(map(str, filter_select(sel_array, reg))))
+    dic = shelve.open(tmp_fname)  # Associar dicionário a arquivo na memória
+
+    """ Salvar os resultados na querie
+    salvar contador do registro como 1 se ainda não existe no dicionário,
+    caso contrário, salve como valor anterior + 1. """
+    for data in select: dic[data] = 1 if data not in dic else dic[data] + 1
+    for key in dic.keys(): print(key, '-', dic[key])
     dic.close()
 
 # Testes:
+<<<<<<< HEAD
 print(querie_1(test_array, 'tmp1.bin', 'count'))
+=======
+querie_5(test_array, 'tmp1.bin', [(32, 40), '>', 15])
+>>>>>>> tmp
