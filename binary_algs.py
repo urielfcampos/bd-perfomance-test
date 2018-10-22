@@ -1,6 +1,6 @@
 from bitarray import bitarray
-import io
-
+import shelve
+import threading
 # Lista com os tamanhos de cada dado (em bits)
 maxb_a = [1, 7, 10, 2, 12, 8, 12, 12]
 
@@ -69,26 +69,40 @@ def r_file(start, stop, file):
     :param stop: ponto de fim
     :return:
     """
+
+    threadName=threading.currentThread().getName()
     with open(file, 'rb') as f:
-        s_array = []
-        f.seek(8 * start, 0)
-        bts = f.read(8)
-        currnt_position = start
-        while bts and currnt_position < stop:
-            a = bitarray()
-            a.frombytes(bts)
-            s = ''
-            for d in a.tolist(): s += '0' if d is False else '1'
-            s_array.append(s)
-            f.seek(0, 1)
+        with shelve.open(f'tmp_cda{threadName}', "c")as file:
+            s_array = []
+            f.seek(start, 0)
             bts = f.read(8)
-            currnt_position += 1
-        return s_array
+            currnt_position = start
+            counter =0
+            while bts and currnt_position < stop:
+                a = bitarray()
+                a.frombytes(bts)
+                s = a.to01()
+                #for d in a.tolist(): s += '0' if d is False else '1'
+                f.seek(0, 1)
+                bts = f.read(8)
+                currnt_position = f.tell()
+                file[str(counter)] = s
+                counter +=1
+            return counter
+
+def write_temp(s_array):
+    with shelve.open(f'tmp_cda{threadName}', "c")as f:
+        for x in range(len(s_array)):
+            f[str(x)] = s_array[x]
+        f.close()
+
+
+
+
 
 # # Testes:
-lines = r_file(1000, 1024, "bdb.bin")
-print(len(lines), lines)
-for l in lines: print(cdataline(l))
+#r_file(1000, 1024, "bdb.bin")
+# for l in lines: print(cdataline(l))
 #lines = r_file("bdb.bin")
 #print(lines)
 #for l in lines: print(cdataline(l))
