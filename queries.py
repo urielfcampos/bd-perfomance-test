@@ -134,4 +134,4 @@ def querie_5(array_reg, tmp_fname, condition):
 
 # Testes:
 print(querie_1(test_array, 'tmp1.bin', 'count'))
-querie_5(test_array, 'tmp1.bin', [(32, 40), '>', 15])
+#querie_5(test_array, 'tmp1.bin', [(32, 40), '>', 15])
